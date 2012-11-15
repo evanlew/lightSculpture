@@ -44,21 +44,9 @@ const int throbTable[] PROGMEM = {
 
 const int throbTableLength = sizeof(throbTable) / sizeof(int);
 
-int reds[] = {12,13,14, -1};
-int oranges[] = {9,10,11, -1};
-int yellows[] = {6,7,8, -1};
-int greens[] = {3,4,5, -1};
-int blue[] = {2, -1};
-
-// int legOne[] = {4,7,10,13, -1};
-// int legTwo[] = {3,6,9,12, -1};
-// int legThree[] = {5,8,11,14, -1};
 
 
-
-//
 // top level setup function
-//
 void setup()
 {  
   int pinNum;
@@ -77,16 +65,15 @@ void setup()
 void loop()
 { 
 
-   if (GetUserMode() == USER_MODE_ONE)
-   {
-     lightShowONE();
-     Serial.println("light show one");
-   }
+  if (GetUserMode() == USER_MODE_ONE)
+  {
+    lightShowONE();
+  }
 
 
-   if (GetUserMode() == USER_MODE_TWO)
-   {
-      lightShowTHREE();
+  if (GetUserMode() == USER_MODE_TWO)
+  {
+    lightShowTHREE();
   }
 
 }
@@ -121,7 +108,6 @@ void lightShowTWO() {
   };
 
   ledPwm[2] = 1993;
-
 
   waveLEDArray(fadeArray, 50);
 }
