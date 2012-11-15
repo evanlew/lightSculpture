@@ -22,8 +22,8 @@ const int onOffSwitch = 18;
 
 // values returned by GetUserMode()()
 const byte USER_MODE_OFF = 0;
-const byte USER_MODE_SIMPLE = 1;
-const byte USER_MODE_MELLOW = 2;
+const byte USER_MODE_ONE = 1;
+const byte USER_MODE_TWO = 2;
 
 
 // global storage for PWM values
@@ -44,7 +44,15 @@ const int throbTable[] PROGMEM = {
 
 const int throbTableLength = sizeof(throbTable) / sizeof(int);
 
+int reds[] = {12,13,14, -1};
+int oranges[] = {9,10,11, -1};
+int yellows[] = {6,7,8, -1};
+int greens[] = {3,4,5, -1};
+int blue[] = {2, -1};
 
+// int legOne[] = {4,7,10,13, -1};
+// int legTwo[] = {3,6,9,12, -1};
+// int legThree[] = {5,8,11,14, -1};
 
 
 
@@ -69,21 +77,98 @@ void setup()
 // main loop, select the display show based on the User Mode Setting
 void loop()
 { 
-  //byte userMode; 
-  // check if the user has selected the Simple mode
-   // if (GetUserMode() == USER_MODE_SIMPLE)
-   // {
-   //   simpleLEDDisplays();
-   //   Serial.println("simple");
-   // }
 
-  // check if the user has selected the Mellow mode
-   if (GetUserMode() == USER_MODE_MELLOW)
+   if (GetUserMode() == USER_MODE_ONE)
    {
-      mellowLEDDisplays();
-      Serial.println("mellow");
+     lightShowONE();
+     Serial.println("light show one");
+   }
+
+
+   if (GetUserMode() == USER_MODE_TWO)
+   {
+      //Serial.println("TWOOOOOOOOOOOOO");
+      lightShowTHREE();
   }
 
+}
+
+
+void lightShowONE() {
+
+  int fadeArray[][6] = {
+    {12,13,14, -1},
+    {9,10,11, -1},
+    {6,7,8, -1},
+    {3,4,5, -1},
+    {2, -1},
+    {-1}
+  };
+
+  waveUpLEDArray(fadeArray, 30);
+  delay(2000);
+
+  fadeLEDsToBlack(30, 1);
+
+}
+
+void lightShowTWO() {
+  // int fadeArray[][6] = {  
+  //   {13, -1}, 
+  //   {10, -1}, 
+  //   {7, -1},
+  //   {4, -1},
+  //   {2, -1},
+  //   {3, -1},
+  //   {6, -1},
+  //   {9, -1},
+  //   {12, -1},
+  //   {9, -1},
+  //   {6, -1},
+  //   {3, -1},
+  //   {2, -1},
+  //   {5, -1},
+  //   {8, -1},
+  //   {11, -1},
+  //   {14, -1},
+  //   {-1},
+  // };
+
+  int fadeArray[][6] = {
+    {13,10,7,4, -1},
+    {12,9,6,3,  -1},
+    {14,11,8,5, -1},
+    {-1}
+  };
+
+  ledPwm[2] = 1993;
+
+
+  waveLEDArray(fadeArray, 50);
+}
+
+void lightShowTHREE() {
+  int fadeArray[][6] = {
+    {13, -1},
+    {12, -1},
+    {14, -1},
+    {10, -1},
+    {9, -1},
+    {11, -1},
+    {7, -1},
+    {6, -1},
+    {8, -1},
+    {4, -1},
+    {3, -1},
+    {5, -1},
+    {2, -1},
+    {-1}
+  };
+
+  waveUpLEDArray(fadeArray, 18);
+  delay(2000);
+
+  fadeLEDsToBlack(30, 1);
 }
 
 //------------------------------------------------------------------
@@ -162,7 +247,7 @@ void showColors(void)
   digitalWrite(14, HIGH);
   digitalWrite(15, HIGH);
   delay(1000);
-  if(GetUserMode() != USER_MODE_SIMPLE) 
+  if(GetUserMode() != USER_MODE_ONE) 
     return;
 
   //
@@ -175,7 +260,7 @@ void showColors(void)
   digitalWrite(12, HIGH);
   digitalWrite(13, HIGH);
   delay(1000);
-  if(GetUserMode() != USER_MODE_SIMPLE) 
+  if(GetUserMode() != USER_MODE_ONE) 
     return;
 
   //
@@ -186,7 +271,7 @@ void showColors(void)
   digitalWrite(9, HIGH);
   digitalWrite(10, HIGH);
   delay(2000);
-  if(GetUserMode() != USER_MODE_SIMPLE) 
+  if(GetUserMode() != USER_MODE_ONE) 
     return;
 
   //
@@ -198,7 +283,7 @@ void showColors(void)
     digitalWrite(9 + (8 - pinNum), LOW);
     delay(250);
 
-    if(GetUserMode() != USER_MODE_SIMPLE) 
+    if(GetUserMode() != USER_MODE_ONE) 
       return;
   }
 }
@@ -225,7 +310,7 @@ void rotateColors(int LEDOnTime, int repeat)
     digitalWrite(15, HIGH);
     delay(LEDOnTime);
 
-    if(GetUserMode() != USER_MODE_SIMPLE)     // quit if the user mode has changed
+    if(GetUserMode() != USER_MODE_ONE)     // quit if the user mode has changed
       return;
 
     digitalWrite(2, LOW);
@@ -241,7 +326,7 @@ void rotateColors(int LEDOnTime, int repeat)
     digitalWrite(6, HIGH);
     delay(LEDOnTime);
 
-    if(GetUserMode() != USER_MODE_SIMPLE)      // quit if the user mode has changed
+    if(GetUserMode() != USER_MODE_ONE)      // quit if the user mode has changed
       return;
 
     digitalWrite(4, LOW);
@@ -257,7 +342,7 @@ void rotateColors(int LEDOnTime, int repeat)
     digitalWrite(10, HIGH);
     delay(LEDOnTime);
 
-    if(GetUserMode() != USER_MODE_SIMPLE)      // quit if the user mode has changed
+    if(GetUserMode() != USER_MODE_ONE)      // quit if the user mode has changed
       return;
 
     digitalWrite(7, LOW);
@@ -274,7 +359,7 @@ void rotateColors(int LEDOnTime, int repeat)
     digitalWrite(13, HIGH);
     delay(LEDOnTime);
 
-    if(GetUserMode() != USER_MODE_SIMPLE)      // quit if the user mode has changed
+    if(GetUserMode() != USER_MODE_ONE)      // quit if the user mode has changed
       return;
 
     digitalWrite(11, LOW);
@@ -311,7 +396,7 @@ void sequenceLEDsCounterClockwise(int LEDOnTime, int repeat)
       //
       // quit if the user mode has changed
       //
-      if(GetUserMode() != USER_MODE_SIMPLE) 
+      if(GetUserMode() != USER_MODE_ONE) 
         return;
     }
   }
@@ -345,7 +430,7 @@ void sequenceLEDsClockwise(int LEDOnTime, int repeat)
       //
       // quit if the user mode has changed
       //
-      if(GetUserMode() != USER_MODE_SIMPLE) 
+      if(GetUserMode() != USER_MODE_ONE) 
         return;
     }
   }
@@ -391,7 +476,7 @@ void sequenceTwoLEDsClockwise(int LEDOnTime, int repeat)
       //
       // quit if the user mode has changed
       //
-      if(GetUserMode() != USER_MODE_SIMPLE) 
+      if(GetUserMode() != USER_MODE_ONE) 
         return;
     }
   }
@@ -420,7 +505,7 @@ void sequenceLEDsAllOnThenAllOff(int LEDOnTime, int repeat)
       digitalWrite(pinNum, HIGH);  
       delay(LEDOnTime);
 
-      if(GetUserMode() != USER_MODE_SIMPLE) 
+      if(GetUserMode() != USER_MODE_ONE) 
         return;
     }
 
@@ -432,7 +517,7 @@ void sequenceLEDsAllOnThenAllOff(int LEDOnTime, int repeat)
       digitalWrite(pinNum, LOW);    
       delay(LEDOnTime);
 
-      if(GetUserMode() != USER_MODE_SIMPLE) 
+      if(GetUserMode() != USER_MODE_ONE) 
         return;
     }
   }
@@ -467,7 +552,7 @@ void rotateLEDsSpeedingUp(int slowOnTime, int fastOnTime)
       delay(currentOnTime);
       digitalWrite(pinNum, LOW);  
 
-      if(GetUserMode() != USER_MODE_SIMPLE)      // quit if the user mode has changed
+      if(GetUserMode() != USER_MODE_ONE)      // quit if the user mode has changed
         return;
     }
 
@@ -492,7 +577,7 @@ void rotateLEDsSpeedingUp(int slowOnTime, int fastOnTime)
       delay(fastOnTime-1);
       digitalWrite(pinNum, LOW);  
 
-      if(GetUserMode() != USER_MODE_SIMPLE)      // quit if the user mode has changed
+      if(GetUserMode() != USER_MODE_ONE)      // quit if the user mode has changed
         return;
     }
   }
@@ -533,7 +618,7 @@ void rotateBackAndForthOnSides(int LEDOnTime, int repeat)
       if (pinNum == 9)
         break;
 
-      if(GetUserMode() != USER_MODE_SIMPLE)      // quit if the user mode has changed
+      if(GetUserMode() != USER_MODE_ONE)      // quit if the user mode has changed
         return;
     }
 
@@ -554,7 +639,7 @@ void rotateBackAndForthOnSides(int LEDOnTime, int repeat)
       if (pinNum == firstLED)
         break;
 
-      if(GetUserMode() != USER_MODE_SIMPLE)      // quit if the user mode has changed
+      if(GetUserMode() != USER_MODE_ONE)      // quit if the user mode has changed
         return;    
     }
   }
@@ -589,7 +674,7 @@ void randomBursts(int LEDOnTime, int LEDOffTime, int repeat)
     digitalWrite(pinNum, LOW);  
     delay(LEDOffTime);
 
-    if(GetUserMode() != USER_MODE_SIMPLE)      // quit if the user mode has changed
+    if(GetUserMode() != USER_MODE_ONE)      // quit if the user mode has changed
       return;
   }
 }
@@ -620,7 +705,7 @@ void flashAndHold()
 
       delay(80);
 
-      if(GetUserMode() != USER_MODE_SIMPLE)      // quit if the user mode has changed
+      if(GetUserMode() != USER_MODE_ONE)      // quit if the user mode has changed
         return;
     }
 
@@ -656,7 +741,7 @@ bool delayBetweenDisplaysAndCheckIfUserModeNotSimple(int delayBetweenShows)
   //
   // if User Mode has changed, turn off the LEDs and return
   //
-  if(GetUserMode() != USER_MODE_SIMPLE)
+  if(GetUserMode() != USER_MODE_ONE)
   { 
     turnOffAllLEDs();
     return(true);
@@ -672,7 +757,7 @@ bool delayBetweenDisplaysAndCheckIfUserModeNotSimple(int delayBetweenShows)
   {  
     delay(10);
 
-    if(GetUserMode() != USER_MODE_SIMPLE)
+    if(GetUserMode() != USER_MODE_ONE)
     { 
       turnOffAllLEDs();
       return(true);
@@ -719,17 +804,17 @@ void mellowLEDDisplays()
  //   return;
 
  // sequenceClockwiseWithFading(firstLED, lastLED, 2, 10, 1);
- // if(GetUserMode() != USER_MODE_MELLOW) return;
+ // if(GetUserMode() != USER_MODE_TWO) return;
  // sequenceClockwiseWithFading(firstLED, lastLED, 4, 10, 1);
- // if(GetUserMode() != USER_MODE_MELLOW) return;
+ // if(GetUserMode() != USER_MODE_TWO) return;
  // sequenceClockwiseWithFading(firstLED, lastLED, 6, 10, 1);
- // if(GetUserMode() != USER_MODE_MELLOW) return;
+ // if(GetUserMode() != USER_MODE_TWO) return;
  // sequenceClockwiseWithFading(firstLED, lastLED, 8, 10, 1);
- // if(GetUserMode() != USER_MODE_MELLOW) return;
+ // if(GetUserMode() != USER_MODE_TWO) return;
  // sequenceClockwiseWithFading(firstLED, lastLED, 10, 10, 1);
- // if(GetUserMode() != USER_MODE_MELLOW) return;
+ // if(GetUserMode() != USER_MODE_TWO) return;
  // sequenceClockwiseWithFading(firstLED, lastLED, 12, 10, 1);
- // if(GetUserMode() != USER_MODE_MELLOW) return;
+ // if(GetUserMode() != USER_MODE_TWO) return;
  // sequenceClockwiseWithFading(firstLED, lastLED, 13, 10, 5);
  // if (delayBetweenDisplaysAndCheckIfUserModeNotMellow(delayBetweenShows))
  //   return;    
@@ -764,7 +849,7 @@ void evanSimpleMellow()
   // }
   int pins[] = {2,3,4, -1};
 
-  int wavePins[][14] = {
+  int wavePins[][6] = {
     {2,3,4, -1},
     {5,6,7, -1},
     {8,9,10, -1},
@@ -828,7 +913,7 @@ void showColorsMellowOne(int LEDOnTime)
   for(count = 0; count < 150; count++)
   { 
     pwmAllPins(LEDOnTime);
-    if(GetUserMode() != USER_MODE_MELLOW) 
+    if(GetUserMode() != USER_MODE_TWO) 
       return;
   }
 
@@ -866,7 +951,7 @@ void showColorsMellowOne(int LEDOnTime)
   for(count = 0; count < 150; count++)
   { 
     pwmAllPins(LEDOnTime);
-    if(GetUserMode() != USER_MODE_MELLOW) 
+    if(GetUserMode() != USER_MODE_TWO) 
       return;
   }
 
@@ -898,7 +983,7 @@ void showColorsMellowOne(int LEDOnTime)
   for(count = 0; count < 250; count++)
   { 
     pwmAllPins(LEDOnTime);
-    if(GetUserMode() != USER_MODE_MELLOW) 
+    if(GetUserMode() != USER_MODE_TWO) 
       return;
   }
 
@@ -940,7 +1025,7 @@ void showColorsMellowTwo(int LEDOnTime)
   for(count = 0; count < 150; count++)
   { 
     pwmAllPins(LEDOnTime);
-    if(GetUserMode() != USER_MODE_MELLOW) 
+    if(GetUserMode() != USER_MODE_TWO) 
       return;
   }
 
@@ -957,7 +1042,7 @@ void showColorsMellowTwo(int LEDOnTime)
   for(count = 0; count < 150; count++)
   { 
     pwmAllPins(LEDOnTime);
-    if(GetUserMode() != USER_MODE_MELLOW) 
+    if(GetUserMode() != USER_MODE_TWO) 
       return;
   }
 
@@ -975,7 +1060,7 @@ void showColorsMellowTwo(int LEDOnTime)
   for(count = 0; count < 150; count++)
   { 
     pwmAllPins(LEDOnTime);
-    if(GetUserMode() != USER_MODE_MELLOW) 
+    if(GetUserMode() != USER_MODE_TWO) 
       return;
   }
 
@@ -992,7 +1077,7 @@ void showColorsMellowTwo(int LEDOnTime)
   for(count = 0; count < 30; count++)
   { 
     pwmAllPins(100);
-    if(GetUserMode() != USER_MODE_MELLOW) 
+    if(GetUserMode() != USER_MODE_TWO) 
       return;
   }
 
@@ -1044,7 +1129,7 @@ void fadeUpSlowAndDownFast(int LEDOnTime)
     //
     // quit if the User Mode has changed
     //
-    if(GetUserMode() != USER_MODE_MELLOW) 
+    if(GetUserMode() != USER_MODE_TWO) 
       return;
   }
 
@@ -1054,7 +1139,7 @@ void fadeUpSlowAndDownFast(int LEDOnTime)
   for(count = 0; count < 30; count++)
   { 
     pwmAllPins(100);
-    if(GetUserMode() != USER_MODE_MELLOW) 
+    if(GetUserMode() != USER_MODE_TWO) 
       return;
   }
 
@@ -1099,7 +1184,7 @@ void climbUp(int LEDOnTime)
     ledPwm[15] = pwm;
     pwmAllPins(LEDOnTime);
   } 
-  if(GetUserMode() != USER_MODE_MELLOW) 
+  if(GetUserMode() != USER_MODE_TWO) 
     return;
 
 
@@ -1112,7 +1197,7 @@ void climbUp(int LEDOnTime)
     ledPwm[14] = pwm;
     pwmAllPins(LEDOnTime);
   } 
-  if(GetUserMode() != USER_MODE_MELLOW) 
+  if(GetUserMode() != USER_MODE_TWO) 
     return;
 
 
@@ -1127,7 +1212,7 @@ void climbUp(int LEDOnTime)
     ledPwm[13] = pwm;
     pwmAllPins(LEDOnTime);
   } 
-  if(GetUserMode() != USER_MODE_MELLOW) 
+  if(GetUserMode() != USER_MODE_TWO) 
     return;
 
 
@@ -1144,7 +1229,7 @@ void climbUp(int LEDOnTime)
     ledPwm[12] = pwm;
     pwmAllPins(LEDOnTime);
   } 
-  if(GetUserMode() != USER_MODE_MELLOW) 
+  if(GetUserMode() != USER_MODE_TWO) 
     return;
 
 
@@ -1163,7 +1248,7 @@ void climbUp(int LEDOnTime)
     ledPwm[11] = pwm;
     pwmAllPins(LEDOnTime);
   } 
-  if(GetUserMode() != USER_MODE_MELLOW) 
+  if(GetUserMode() != USER_MODE_TWO) 
     return;
 
 
@@ -1184,7 +1269,7 @@ void climbUp(int LEDOnTime)
     ledPwm[10] = pwm;
     pwmAllPins(LEDOnTime);
   } 
-  if(GetUserMode() != USER_MODE_MELLOW) 
+  if(GetUserMode() != USER_MODE_TWO) 
     return;
 
 
@@ -1200,7 +1285,7 @@ void climbUp(int LEDOnTime)
 
     pwmAllPins(LEDOnTime);
   } 
-  if(GetUserMode() != USER_MODE_MELLOW) 
+  if(GetUserMode() != USER_MODE_TWO) 
     return;
 
 
@@ -1210,7 +1295,7 @@ void climbUp(int LEDOnTime)
   for(count = 0; count < 10; count++)
   { 
     pwmAllPins(100);
-    if(GetUserMode() != USER_MODE_MELLOW) 
+    if(GetUserMode() != USER_MODE_TWO) 
       return;
   }
 
@@ -1348,7 +1433,7 @@ void alternateThrobEveryOther(int LEDOnTime, int repeat)
       //
       // quit if the user mode has changed
       //
-      if(GetUserMode() != USER_MODE_MELLOW) 
+      if(GetUserMode() != USER_MODE_TWO) 
         return;
     }
   }
@@ -1453,7 +1538,7 @@ void sequenceClockwiseWithFading(byte firstLEDNumber, byte lastLEDNumber, byte n
       //
       // quit if the user mode has changed
       //
-      if(GetUserMode() != USER_MODE_MELLOW) 
+      if(GetUserMode() != USER_MODE_TWO) 
         return;
     }
 
@@ -1557,7 +1642,7 @@ void SequenceCounterClockwiseWithFading(byte firstLEDNumber, byte lastLEDNumber,
       //
       // quit if the user mode has changed
       //
-      if(GetUserMode() != USER_MODE_MELLOW) 
+      if(GetUserMode() != USER_MODE_TWO) 
         return;
     }
 
@@ -1634,7 +1719,7 @@ void theWave(byte firstLEDNumber, byte lastLEDNumber, int tableStep, int LEDOnTi
       //
       // quit if the user mode has changed
       //
-      if(GetUserMode() != USER_MODE_MELLOW) 
+      if(GetUserMode() != USER_MODE_TWO) 
         return;
     }
   }
@@ -1656,7 +1741,7 @@ bool delayBetweenDisplaysAndCheckIfUserModeNotMellow(int delayBetweenShows)
 { 
   int delay10ms;
 
-  if(GetUserMode() != USER_MODE_MELLOW)
+  if(GetUserMode() != USER_MODE_TWO)
     return(true);
 
   delay10ms = delayBetweenShows / 10;
@@ -1665,7 +1750,7 @@ bool delayBetweenDisplaysAndCheckIfUserModeNotMellow(int delayBetweenShows)
   {  
     delay(10);
 
-    if(GetUserMode() != USER_MODE_MELLOW)
+    if(GetUserMode() != USER_MODE_TWO)
       return(true);
 
     delay10ms--;
@@ -1847,7 +1932,7 @@ void fadeUpOneLED(byte pinNum, byte tableStep, int LEDOnTime)
     //
     // quit if the user mode has changed
     //
-    if(GetUserMode() != USER_MODE_MELLOW) 
+    if(GetUserMode() != USER_MODE_TWO) 
       return;
   }
 }
@@ -1883,7 +1968,7 @@ void FadeUpAndDownOneLED(byte pinNum, byte tableStep, int LEDOnTime)
     //
     // quit if the user mode has changed
     //
-    if(GetUserMode() != USER_MODE_MELLOW) 
+    if(GetUserMode() != USER_MODE_TWO) 
       return;
   }
 }
@@ -1970,8 +2055,8 @@ void pwmAllPins(int LEDOnTime)
 //
 // return the state of the user mode
 //    Exit:  USER_MODE_OFF returned if on/off switch in the off position
-//           USER_MODE_SIMPLE returned if in the "simple display" mode
-//           USER_MODE_MELLOW returned if in the "mellow display" mode
+//           USER_MODE_ONE returned if in the "simple display" mode
+//           USER_MODE_TWO returned if in the "mellow display" mode
 //
 byte GetUserMode()
 { 
@@ -1991,9 +2076,9 @@ byte GetUserMode()
   // NOTE: THIS REALLY SHOULD HAVE HYSTERESIS! 
 
   if (analogValue < 512)
-    return(USER_MODE_SIMPLE);
+    return(USER_MODE_ONE);
 
-  return(USER_MODE_MELLOW);
+  return(USER_MODE_TWO);
 }
 
 
@@ -2003,7 +2088,7 @@ byte GetUserMode()
 //      Custom Library Functions (by evan)
 //--------------------------------------------
 
-void exitIfNotMode(byte userMode) {
+void checkMode(byte userMode) {
   if (GetUserMode() != userMode) {
     loop();
   }
@@ -2032,7 +2117,7 @@ void fadUpLEDArray(int pins[]) {
   
 }
 
-void waveUpLEDArray(int pins[][14], int speed) {
+void waveUpLEDArray(int pins[][6], int speed) {
   int pwm = 0,
       throbOffset = 0;
   
@@ -2059,7 +2144,7 @@ void waveUpLEDArray(int pins[][14], int speed) {
       }
     }
 
-    pwmAllPins(100);
+    pwmAllPins(50);
 
   }
 
@@ -2070,3 +2155,98 @@ void waveUpLEDArray(int pins[][14], int speed) {
     }
   }
 }
+
+void waveLEDArray(int pins[][6], int speed) {
+  int pwm = 0,
+      throbOffset = 0;
+  
+  for (int tableIndex = 0; tableIndex < throbTableLength + throbOffset; tableIndex++) {
+    for (int i = 0; pins[i][0] != -1; i++) {
+     
+      throbOffset = i * speed;
+
+      if (tableIndex - throbOffset < 0 ) {
+        pwm = 0;
+      } else {
+        pwm = pgm_read_word(&throbTable[tableIndex - throbOffset]);
+      }
+
+
+      for (int j = 0; pins[i][j] != -1; j++) {
+        if (tableIndex - throbOffset <= throbTableLength) {
+          ledPwm[pins[i][j]] = pwm;
+          ledIndex[pins[i][j]] = tableIndex - throbOffset;
+        } else {
+          ledPwm[pins[i][j]] = 0;
+          ledIndex[pins[i][j]] = 0;
+        }
+          
+      }
+    }
+
+    pwmAllPins(50);
+
+  }
+
+}
+
+
+// void waveUpLEDString(int pins[], int speed) {
+//   Serial.println("here1");
+//   int pwm = 0,
+//       throbOffset = 0;
+  
+//   for (int tableIndex = 0; tableIndex < throbTableLength + throbOffset; tableIndex++) {
+//     for (int i = 0; pins[i] != -1; i++) {
+     
+//       throbOffset = i * speed;
+
+//       if (tableIndex - throbOffset < 0 ) {
+//         pwm = 0;
+//       } else {
+//         pwm = pgm_read_word(&throbTable[tableIndex - throbOffset]);
+//       }
+
+
+      
+//       if (tableIndex - throbOffset > throbTableLength / 2) {
+//         ledPwm[pins[i]] = 1993;
+//         ledIndex[pins[i]] = throbTableLength / 2;
+//       } else {
+//         ledPwm[pins[i]] = pwm;
+//         ledIndex[pins[i]] = tableIndex - throbOffset;
+//       }
+      
+//     }
+
+//     pwmAllPins(100);
+
+//   }
+
+//    //turn them all on
+//   for (int i = 0; pins[i] != -1; i++) {
+//       digitalWrite(pins[i], HIGH);
+//   }
+
+// }
+
+
+
+// void waveUpLEDString(int pins[], int speed) {
+//   Serial.println("herherherherherherherherherh");
+//   int _pins[][14] = {},
+//   i = 0;
+
+//   for(; pins[i] != -1; i++) {
+//     _pins[i][0] = pins[i];
+//     _pins[i][1] = -1;
+//     Serial.println(pins[i]);
+//   }
+
+//   _pins[i + 1][0] = -1;
+
+//   waveUpLEDArray(_pins, speed);
+
+//   free(&_pins);
+
+// }
